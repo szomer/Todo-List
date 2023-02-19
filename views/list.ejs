@@ -7,6 +7,11 @@
     <title>Document</title>
 
     <link href="/assets/style.css" type="text/css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
   </head>
   <body>
     <div class="container">
@@ -17,25 +22,46 @@
           </div>
 
           <div class="box">
-            <% todos.forEach(todo => { %>
+            <% if(todos.length === 0){ %>
             <div class="item">
+              <p class="empty">Your to do list is empty!</p>
+            </div>
+            <% } else { todos.forEach((todo, i) => { %>
+            <div
+              class="item"
+              onmouseover="show(<%= i %>)"
+              onmouseout="hide(<%= i %>)"
+            >
               <input type="checkbox" />
               <p><%= todo %></p>
-            </div>
-            <% }); %>
 
-            <form class="item" action="/" method="POST">
+              <form id="delete" action="/delete" method="POST">
+                <input type="hidden" name="deleteItem" value="<%=todo%>" />
+                <button
+                  id="btn-<%=i%>"
+                  class="delete-button hidden"
+                  type="submit"
+                >
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </form>
+            </div>
+            <% })}; %>
+
+            <form id="add" class="item" action="/" method="POST">
               <input
                 type="text"
                 name="newItem"
                 placeholder="New Item"
                 autocomplete="off"
               />
-              <button type="submit" name="button">+</button>
+              <button id="add-button" type="submit" name="button">+</button>
             </form>
           </div>
         </div>
       </div>
     </div>
+
+    <script src="/assets/index.js"></script>
   </body>
 </html>
