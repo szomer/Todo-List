@@ -15,50 +15,70 @@
   </head>
   <body>
     <div class="container">
-      <div class="container-middle">
-        <div class="container-inner">
-          <div id="heading" class="box">
-            <h1><%= date %></h1>
+      <div class="upper">
+        <form action="/search" method="POST">
+          <% const options = { weekday: 'long', day: 'numeric', month: 'long',
+          }; const day = new Date().toLocaleDateString('en-DE', options); %>
+          <h1 id="day"><%= day %></h1>
+
+          <div class="search-bar">
+            <input
+              type="search"
+              name="search"
+              id="search"
+              autocomplete="off"
+              placeholder="View or Add a List"
+            />
+            <button class="search-button" action="submit">
+              <span class="material-symbols-outlined"> search </span>
+            </button>
           </div>
+        </form>
+      </div>
+      <div id="heading" class="box">
+        <h1><%= title %> List</h1>
+      </div>
 
-          <div class="box">
-            <% if(todos.length === 0){ %>
-            <div class="item">
-              <p class="empty">Your to do list is empty!</p>
-            </div>
-            <% } else { todos.forEach((todo, i) => { %>
-            <div
-              class="item"
-              onmouseover="show(<%= i %>)"
-              onmouseout="hide(<%= i %>)"
-            >
-              <input type="checkbox" />
-              <p><%= todo %></p>
-
-              <form id="delete" action="/delete" method="POST">
-                <input type="hidden" name="deleteItem" value="<%=todo%>" />
-                <button
-                  id="btn-<%=i%>"
-                  class="delete-button hidden"
-                  type="submit"
-                >
-                  <span class="material-symbols-outlined">delete</span>
-                </button>
-              </form>
-            </div>
-            <% })}; %>
-
-            <form id="add" class="item" action="/" method="POST">
-              <input
-                type="text"
-                name="newItem"
-                placeholder="New Item"
-                autocomplete="off"
-              />
-              <button id="add-button" type="submit" name="button">+</button>
-            </form>
-          </div>
+      <div class="box">
+        <% if(todos.length === 0){ %>
+        <div class="item">
+          <p class="empty">Your to do list is empty!</p>
         </div>
+        <% } else { todos.forEach((todo, i) => { %>
+        <div
+          class="item"
+          onmouseover="show(<%= i %>)"
+          onmouseout="hide(<%= i %>)"
+        >
+          <input type="checkbox" />
+          <p><%= todo %></p>
+
+          <form id="delete" action="/delete" method="POST">
+            <input type="hidden" name="deleteItem" value="<%=todo%>" />
+            <button
+              id="btn-<%=i%>"
+              class="delete-button hidden"
+              type="submit"
+              name="list"
+              value="<%=title%>"
+            >
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </form>
+        </div>
+        <% })}; %>
+
+        <form id="add" class="item" action="/" method="POST">
+          <input
+            type="text"
+            name="newItem"
+            placeholder="New Item"
+            autocomplete="off"
+          />
+          <button id="add-button" type="submit" name="list" value="<%=title%>">
+            +
+          </button>
+        </form>
       </div>
     </div>
 

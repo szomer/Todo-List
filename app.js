@@ -2,18 +2,20 @@ const express = require('express');
 const mongoose = require('mongoose');
 const todoController = require('./controllers/todoController');
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.use('/assets', express.static(__dirname + '/public'));
-app.set('view engine', 'ejs');
 // connection url
 const url = 'mongodb://0.0.0.0:27017/todoDB';
+const port = process.env.PORT || 3000;
+const app = express();
+app.use('/assets', express.static(__dirname + '/public'));
+app.set('view engine', 'ejs');
+
+var Todo, List, todoSchema, listSchema;
+
+// items array
+var defaultItems = [];
 
 // IIFE
 (async function run() {
-  var Todo;
-
   // db
   try {
     // strictQuery will become false in mongoose 7
@@ -22,7 +24,7 @@ const url = 'mongodb://0.0.0.0:27017/todoDB';
     await mongoose.connect(url);
     console.log('Database connected..');
     // create schema with validation
-    const todoSchema = await mongoose.Schema({
+    todoSchema = await mongoose.Schema({
       name: {
         type: String,
         required: true,
@@ -34,8 +36,25 @@ const url = 'mongodb://0.0.0.0:27017/todoDB';
   } catch (err) {
     console.log(err);
   } finally {
+    // push items to default list
+    defaultItems.push(new Todo({ name: 'Welcome to your todo list!' }));
+    defaultItems.push(
+      new Todo({ name: 'Hit the + button to add a new item.' })
+    );
+
     // get the items from db
     getItems();
+  }
+
+  try {
+    listSchema = await mongoose.Schema({
+      name: { type: String, required: true },
+      items: [todoSchema],
+    });
+
+    List = mongoose.model('List', listSchema);
+  } catch (err) {
+    console.log('err List');
   }
 
   // get the list form db
@@ -56,22 +75,15 @@ const url = 'mongodb://0.0.0.0:27017/todoDB';
         insertDefault();
       } else {
         // refer to controller to render the page
-        todoController(app, list, Todo);
+        todoController(app, list, Todo, List, defaultItems);
       }
     }
   }
 
   // insert default items into db
   async function insertDefault() {
-    // items array
-    items = [
-      new Todo({ name: 'Welcome to your todo list!' }),
-      new Todo({ name: 'Hit the + button to add a new item.' }),
-      new Todo({ name: 'Check the box to remove the item.' }),
-    ];
-
     try {
-      const saveItems = await Todo.insertMany(items);
+      const saveItems = await Todo.insertMany(defaultItems);
       console.log('[INSERT DB]', saveItems.length, 'entries');
     } catch (err) {
       console.log(err);
