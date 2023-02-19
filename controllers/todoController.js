@@ -2,9 +2,7 @@ const bodyParser = require('body-parser');
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-const items = [];
-
-module.exports = function (app) {
+module.exports = function (app, items) {
   app.get('/', function (req, res) {
     // date
     const options = {
