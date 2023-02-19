@@ -35,6 +35,9 @@ module.exports = function (app, items, Todo, List, defaultItems) {
     const itemName = req.body.deleteItem;
     const listTitle = req.body.list;
 
+    console.log('item', itemName);
+    console.log('list', listTitle);
+
     if (listTitle === 'Today') {
       // delete the item from db
       if (deleteItem(Todo, itemName)) {
@@ -48,7 +51,7 @@ module.exports = function (app, items, Todo, List, defaultItems) {
       res.redirect('/');
     } else {
       try {
-        await List.findOneAndUpdate(
+        const deleteItem = await List.findOneAndUpdate(
           { name: listTitle },
           { $pull: { items: { name: itemName } } }
         );
@@ -102,7 +105,6 @@ module.exports = function (app, items, Todo, List, defaultItems) {
           name: listName,
           items: defaultItems,
         });
-
         const saveItem = await list.save();
         console.log('[INSERT DB]', saveItem.name);
         res.redirect('/' + listName);

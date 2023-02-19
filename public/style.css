@@ -9,7 +9,7 @@ body {
 
 body {
   background-color: #e4e9fd;
-  background-image: -webkit-linear-gradient(65deg, #a683e3 50%, #e4e9fd 50%);
+  background-image: -webkit-linear-gradient(65deg, #a683e3 40%, #e4e9fd 40%);
   font-family: 'Poppins', sans-serif;
 }
 
@@ -39,6 +39,18 @@ button {
 }
 .upper {
   padding: 30px 0px;
+}
+
+#return {
+  position: absolute;
+  left: 10%;
+  top: 8%;
+  border: none;
+  background: transparent;
+}
+
+#return:hover {
+  color: #c3b0e4;
 }
 
 .box {

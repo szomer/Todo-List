@@ -16,9 +16,18 @@
   <body>
     <div class="container">
       <div class="upper">
+        <% if(title !== "Today"){ %>
+        <form action="/" method="GET">
+          <button id="return" type="submit">
+            <span class="material-symbols-outlined"> arrow_back </span>
+          </button>
+        </form>
+        <% } %>
+
         <form action="/search" method="POST">
           <% const options = { weekday: 'long', day: 'numeric', month: 'long',
           }; const day = new Date().toLocaleDateString('en-DE', options); %>
+
           <h1 id="day"><%= day %></h1>
 
           <div class="search-bar">
