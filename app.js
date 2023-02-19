@@ -1,15 +1,13 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const todoController = require('./controllers/todoController');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use('/assets', express.static('/public'));
+app.use('/assets', express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 
-app.get('/', function (req, res) {
-  res.send('Hello');
-});
+todoController(app);
 
 app.listen(port, function () {
   console.log(`Server started on port ${port}..`);
