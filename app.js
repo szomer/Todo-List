@@ -1,9 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
 const todoController = require('./controllers/todoController');
 
+dotenv.config();
+
 // connection url
-const url = 'mongodb://0.0.0.0:27017/todoDB';
+const url = process.env.MONGO_URL;
+
 const port = process.env.PORT || 3000;
 const app = express();
 app.use('/assets', express.static(__dirname + '/public'));
