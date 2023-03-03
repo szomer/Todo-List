@@ -1,6 +1,6 @@
 # To Do List App
 
-Application to store to do lists. Create, read, update, delete list items. 
+Frontend / backend application to store to do lists. Create, read, update, delete list items. 
 - To view the website live click [HERE](https://to-do-list-snru.onrender.com/) (Render hosting service - app goes to sleep while inactive).
 
 Developed using 
